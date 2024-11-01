@@ -19,6 +19,10 @@ def prepare_data(days, lon, lat):
     precipitation = [forecast_data[i]['Precipitation Probability'] for i in range(days)]
     return dates, min_temps, max_temps, humidity, wind_speed, precipitation
 
+# Валидация координат
+def validate_coordinates(lat, lon):
+    pattern = r'^-?\d+\.\d+$'
+    return re.match(pattern, lat) and re.match(pattern, lon)
 
 # Создаем приложение Dash
 app = Dash(__name__)
@@ -61,12 +65,6 @@ app.layout = html.Div([
     # Контейнер для графиков
     html.Div(id='graphs-container')
 ])
-
-
-# Валидация координат
-def validate_coordinates(lat, lon):
-    pattern = r'^-?\d+\.\d+$'
-    return re.match(pattern, lat) and re.match(pattern, lon)
 
 
 # Callback для обновления графиков и валидации координат

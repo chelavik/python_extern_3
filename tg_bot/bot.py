@@ -22,9 +22,9 @@ dp = Dispatcher(storage=storage)
 
 
 class Form(StatesGroup):
-    start_point = State()  # Состояние для начальной точки
-    end_point = State()  # Состояние для конечной точки
-    forecast_days = State()  # Состояние для хранения количества дней прогноза
+    start_point = State()
+    end_point = State()
+    forecast_days = State()
 
 
 # Команда /start
@@ -81,7 +81,7 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
     await callback_query.message.answer(
         f"Вы выбрали прогноз на {days_text}. Введите начальную точку маршрута (lat,lon).")
 
-    await state.set_state(Form.start_point)  # Устанавливаем состояние ожидания начальной точки
+    await state.set_state(Form.start_point)
 
 
 # Обработка ввода начальной точки маршрута
@@ -89,10 +89,10 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
 async def process_start_point(message: types.Message, state: FSMContext):
     try:
         lat, lon = map(float, message.text.split(","))
-        await state.update_data(start_point=(lat, lon))  # Сохраняем начальную точку в состоянии
+        await state.update_data(start_point=(lat, lon))
         await message.answer("Начальная точка принята. Теперь введите конечную точку маршрута (lat,lon).")
 
-        await state.set_state(Form.end_point)  # Устанавливаем состояние ожидания конечной точки
+        await state.set_state(Form.end_point)
     except ValueError:
         await message.answer(
             "Неверный формат! Пожалуйста, введите координаты в формате: lat,lon (например, 55.7558,37.6173).")
@@ -132,7 +132,6 @@ async def process_end_point(message: types.Message, state: FSMContext):
             "Неверный формат! Пожалуйста, введите координаты в формате: lat,lon (например, 55.7558,37.6173).")
 
 
-# Основная функция для запуска бота
 async def main():
     await dp.start_polling(bot)
 
